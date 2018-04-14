@@ -10,18 +10,27 @@ import { connect } from 'react-redux'
 import { List as list } from 'immutable'
 
 class Home extends Component {
-    state = {
+    /*state = {
         modalVisible: false,
-    }
-    handleOpenModal = (media) => {
-        this.setState({
+    }*/
+    handleOpenModal = (id) => {
+        /*this.setState({
             modalVisible: true,
             media
+        })*/
+        this.props.dispatch({
+            type: 'OPEN_MODAL',
+            payload: {
+                mediaId: id
+            }
         })
     }
     handleCloseModal = (event) => {
-        this.setState({
+        /*this.setState({
             modalVisible: false,
+        })*/
+        this.props.dispatch({
+            type: 'CLOSE_MODAL'
         })
     }
     render() {
@@ -35,15 +44,16 @@ class Home extends Component {
                         search={this.props.search}
                     />
                     {
-                        this.state.modalVisible &&
+                        this.props.modal.get('visibility') &&
                         <ModalContainer>
                             <Modal
                                 handleClick={this.handleCloseModal}
                             >
                                 <VideoPlayer
                                     autoplay
-                                    src={this.state.media.src}
-                                    title={this.state.media.title}
+                                    id={this.props.modal.get('mediaId')}
+                                //src={this.state.media.src}
+                                //title={this.state.media.title}
                                 />
                             </Modal>
                         </ModalContainer>
@@ -60,7 +70,7 @@ function mapStateToProps(state, props) {
     })
     let searchResults = list()
     const search = state.get('data').get('search')
-    if(search) {
+    if (search) {
         const mediaList = state.get('data').get('entities').get('media')
         searchResults = mediaList.filter((item) => {
             return item.get('author').toLowerCase().includes(search.toLowerCase())
@@ -68,7 +78,8 @@ function mapStateToProps(state, props) {
     }
     return {
         categories: categories,
-        search: searchResults 
+        search: searchResults,
+        modal: state.get('modal')
     }
 }
 export default connect(mapStateToProps)(Home)
