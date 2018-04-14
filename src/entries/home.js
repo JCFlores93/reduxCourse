@@ -6,23 +6,30 @@ import Home from '../pages/containers/home';
 // console.log('Hola mundo!' )
 import { createStore } from 'redux'
 import { Provider } from 'react-redux'
-import reducer from '../reducers/data'
-import data from '../schemas/index' 
+//import reducer from '../reducers/data'
+import reducer from '../reducers/index'
+//import data from '../schemas/index' 
+import { Map as map } from 'immutable'
 
-console.log(data)
+//console.log(data)
 
-const initialState = {
+/*const initialState = { 
     data: {
         //...data
         entities: data.entities,
-        categories: data.result.categories
+        categories: data.result.categories,
+        search: []
     },
-    search: []
-}
+    modal: {
+        visibility: false,
+        mediaId: null
+    }
+    
+}*/
 
 const store = createStore(
     reducer,
-    initialState,
+    map(),
     window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
 )
 
