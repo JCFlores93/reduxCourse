@@ -8,22 +8,13 @@ function handleSubmit(event) {
     const data = new FormData($form);
     const title = data.get('title');
     console.log(title);
+    store.dispatch({
+        type: 'ADD_SONG',
+        payload: {
+            title
+        }
+    })
 }
-
-const store = createStore(
-    (state) => state,
-    initialState,
-    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
-)
-
-store.dispatch({
-    //lo único requerido es 
-    type: 'ADD_SONG',
-    payload: {
-        title
-    }
-})
-
 
 const initialState = [
     {
@@ -37,7 +28,6 @@ const initialState = [
     }
 ]
 
-
 const reducer = (state, action) => {
     switch (action.type) {
         case 'ADD_SONG':
@@ -47,16 +37,28 @@ const reducer = (state, action) => {
     }
 }
 
+const store = createStore(
+    reducer,
+    initialState,
+    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
+)
 
+const render = () => {
+    const $container = document.getElementById('playlist')
+    const playlist = store.getState()
+    $container.innerHTML = '' 
+    playlist.forEach((item) => {
+        const template = document.createElement('p')
+        template.textContent = item.title
+        $container.appendChild(template)
+    })
+}
+render()
 
-const $container = document.getElementById('playlist')
-const playlist = store.getState()
-playlist.forEach(element => {
-    const template = document.createElement('p')
-    template.textContent = element.title
-    $container.appendChild(template)
-});
+const handleChange = () => {
+    render()
+}
 
-
+store.subscribe(handleChange)
 
 console.log(store.getState())
