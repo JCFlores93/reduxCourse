@@ -1,6 +1,7 @@
 import search from "../widgets/containers/search";
 import schema from '../schemas/index'
 import { fromJS } from 'immutable'
+import { SEARCH_ENTITIES } from '../actions-types/index'
 
 const initialState = fromJS({
     //...data
@@ -11,7 +12,7 @@ const initialState = fromJS({
 
 function data(state = initialState, action) {
     switch (action.type) {
-        case 'SEARCH_ENTITIES': {
+        case SEARCH_ENTITIES: {
             //action.payload.query
             /*let results = []
             if (action.payload.query) {
